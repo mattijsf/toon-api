@@ -1,0 +1,32 @@
+{
+  "javaType" : "com.sqcubes.toon.api.model.ToonLoginResponse",
+  "type": "object",
+  "extends" : {
+    "$ref" : "ToonResponse.json"
+  },
+  "properties": {
+    "agreements": {
+      "id": "agreements",
+      "type": "array",
+      "items": {
+        "$ref": "ToonAgreement.json"
+      }
+    },
+    "clientId": {
+      "id": "clientId",
+      "type": "string"
+    },
+    "clientIdChecksum": {
+      "id": "clientIdChecksum",
+      "type": "string"
+    },
+    "passwordHash": {
+      "id": "passwordHash",
+      "type": "string"
+    },
+    "sample": {
+      "id": "sample",
+      "type": "boolean"
+    }
+  }
+}

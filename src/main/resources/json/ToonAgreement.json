@@ -1,0 +1,46 @@
+{
+  "javaType" : "com.sqcubes.toon.api.model.ToonAgreement",
+  "type": "object",
+  "properties": {
+    "agreementId": {
+      "id": "agreementId",
+      "type": "string"
+    },
+    "agreementIdChecksum": {
+      "id": "agreementIdChecksum",
+      "type": "string"
+    },
+    "city": {
+      "id": "city",
+      "type": "string"
+    },
+    "displayCommonName": {
+      "id": "displayCommonName",
+      "type": "string"
+    },
+    "displayHardwareVersion": {
+      "id": "displayHardwareVersion",
+      "type": "string"
+    },
+    "displaySoftwareVersion": {
+      "id": "displaySoftwareVersion",
+      "type": "string"
+    },
+    "heatingType": {
+      "id": "heatingType",
+      "type": "string"
+    },
+    "houseNumber": {
+      "id": "houseNumber",
+      "type": "string"
+    },
+    "postalCode": {
+      "id": "postalCode",
+      "type": "string"
+    },
+    "street": {
+      "id": "street",
+      "type": "string"
+    }
+  }
+}

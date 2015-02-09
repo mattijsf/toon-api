@@ -1,0 +1,51 @@
+apply plugin: 'java'
+apply plugin: 'jsonschema2pojo'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.6
+version = '1.0'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.jsonschema2pojo:jsonschema2pojo-gradle-plugin:0.4.7'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.httpcomponents:httpclient:4.3.6'
+    compile 'com.google.code.gson:gson:2.3.+'
+    compile 'commons-lang:commons-lang:2.6'
+    compile 'javax.validation:validation-api:1.1.0.Final'
+
+    testCompile 'junit:junit:4.11'
+    testCompile 'com.squareup.okhttp:okhttp-apache:1.6.0'
+    testCompile 'com.google.mockwebserver:mockwebserver:20130706'
+    testCompile 'commons-io:commons-io:2.4'
+}
+
+idea {
+    module {
+        excludeDirs -= file("$buildDir")
+        buildDir.listFiles({d,f->f != 'generated-sources'} as FilenameFilter).each {excludeDirs += it}
+    }
+}
+
+jsonSchema2Pojo {
+    targetPackage = 'com.sqcubes.toon.api.model'
+    generateBuilders = false
+    includeHashcodeAndEquals = false
+    includeToString = true
+    annotationStyle = 'none'
+    includeJsr303Annotations = false
+    propertyWordDelimiters = ['_'] as char[]
+}
+

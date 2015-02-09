@@ -1,0 +1,13 @@
+{
+  "javaType" : "com.sqcubes.toon.api.model.ToonLoginCheckResponse",
+  "type": "object",
+  "extends" : {
+    "$ref" : "ToonResponse.json"
+  },
+  "properties": {
+    "loggedIn": {
+      "id": "loggedIn",
+      "type": "boolean"
+    }
+  }
+}

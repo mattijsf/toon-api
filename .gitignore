@@ -1,0 +1,8 @@
+**/.*
+!/.gitignore
+**/*.iml
+**/target
+**/build
+
+*.apk
+local.properties

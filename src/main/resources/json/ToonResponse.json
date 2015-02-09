@@ -1,0 +1,16 @@
+{
+  "javaType" : "com.sqcubes.toon.api.model.ToonResponse",
+  "type": "object",
+  "properties": {
+    "errorCode": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "success": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}
