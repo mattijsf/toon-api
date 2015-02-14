@@ -16,7 +16,6 @@ Implemented so far:
 ## Usage
 
 ### ToonClient
-First you have to implement your own `ToonFilePersistenceHandler`. By default the `ToonClient` will use a built-in `ToonMemoryPersistenceHandler` but this is not recommended when using the API in real life. Basically the handler stores the username / password-hash returned by the external Toon API when you perform the initial authentication. When the authentication tokens (that are used to communicate with the external Toon API) become invalid the ToonFilePersistenceHandler is consulted for credentials in order to renew the authentication tokens automatically. There is also a `ToonFilePersistenceHandler` that you could use to get started.
 
 Example:
 ```java
@@ -31,6 +30,8 @@ ToonClient toon = new ToonClient(HttpClients.createDefault());
 // use the same ToonFilePersistenceHandler when you create a new ToonClient instance.
 ToonClient toon = new ToonClient(HttpClients.createDefault(), new ToonFilePersistenceHandler(file));
 ```
+
+By default the `ToonClient` will use a built-in `ToonMemoryPersistenceHandler` but it is not recommended when using the API in real life. Basically the handler stores the username / password-hash returned by the external Toon API upon the initial authentication. When the authentication tokens (that are used to communicate with the external Toon API) expire or become invalid the ToonFilePersistenceHandler is consulted for credentials in order to renew the authentication tokens automatically. There is a `ToonFilePersistenceHandler` (see above exmaple) that you could use to get started, but you can create your own by implementing the `ToonPersistenceHandler` interface.
 
 ### Authenticate
 Authentication should be performed using the same account you use for the actual Toon device.
@@ -62,7 +63,7 @@ boolean success = toon.setSchemeState(ToonSchemeState.SLEEP);
 ```
 ## Known issues
 
-You can expect SSL issues using java 6 on a Mac / (some)Linux distributions. I got messages like:
+You can expect SSL issues using java 6 on a Mac / (some) Linux distributions. I got messages like:
 
 ```java
 javax.net.ssl.SSLException: java.lang.RuntimeException: Could not generate DH keypair
