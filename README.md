@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/travis-repos/chirp-org-production.svg?branch=master)](https://travis-ci.org/travis-repos/chirp-org-production)
+[![Build Status](https://travis-ci.org/mattijsf/toon-api.svg?branch=master)](https://travis-ci.org/mattijsf/toon-api)
 
 # Toon API
 A reversed engineered java API for the Eneco Toon thermostat.
