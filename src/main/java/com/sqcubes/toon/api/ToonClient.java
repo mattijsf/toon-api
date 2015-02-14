@@ -2,6 +2,7 @@ package com.sqcubes.toon.api;
 
 import com.google.gson.Gson;
 import com.sqcubes.toon.api.exception.ToonAuthenticationFailedException;
+import com.sqcubes.toon.api.exception.ToonException;
 import com.sqcubes.toon.api.exception.ToonLoginFailedException;
 import com.sqcubes.toon.api.exception.ToonNotAuthenticatedException;
 import com.sqcubes.toon.api.model.ToonLoginResponse;
@@ -126,7 +127,7 @@ public class ToonClient {
         }
     }
 
-    public boolean authenticate(@NotNull String username, @NotNull String password) throws ToonAuthenticationFailedException {
+    public boolean authenticate(@NotNull String username, @NotNull String password) throws ToonException {
         try {
             return login(username, password, false);
         } catch (ToonLoginFailedException e) {
@@ -134,7 +135,7 @@ public class ToonClient {
         }
     }
 
-    public boolean setSchemeState(ToonSchemeState state) throws ToonLoginFailedException {
+    public boolean setSchemeState(ToonSchemeState state) throws ToonException {
         assertCredentials();
 
         try{
@@ -156,7 +157,7 @@ public class ToonClient {
         }
     }
 
-    public boolean setTemperature(@NotNull float temperatureInCelsius) throws ToonLoginFailedException {
+    public boolean setTemperature(@NotNull float temperatureInCelsius) throws ToonException {
         assertCredentials();
 
         try {
@@ -182,7 +183,7 @@ public class ToonClient {
         return false;
     }
 
-    private boolean login() throws ToonLoginFailedException {
+    private boolean login() throws ToonException {
         String username = persistenceHandler.getPersistedKeyValue(PERSISTENCE_KEY_USERNAME);
         String passwordHash = persistenceHandler.getPersistedKeyValue(PERSISTENCE_KEY_PASSWORD_HASH);
 
@@ -194,7 +195,7 @@ public class ToonClient {
         return true;
     }
 
-    private boolean login(String username, String password, boolean hashed) throws ToonLoginFailedException {
+    private boolean login(String username, String password, boolean hashed) throws ToonException {
         try{
             Map<String, String> params = new HashMap<String, String>();
             params.put("username", username);
@@ -225,7 +226,7 @@ public class ToonClient {
         }
     }
 
-    private boolean confirmLoginAgreement(ToonLoginResponse login) throws ToonUnauthorizedException {
+    private boolean confirmLoginAgreement(ToonLoginResponse login) throws ToonUnauthorizedException, ToonException {
         Map<String, String> params = new HashMap<String, String>(randomParam());
         params.put("clientId", login.getClientId());
         params.put("clientIdChecksum", login.getClientIdChecksum());
@@ -246,7 +247,7 @@ public class ToonClient {
             throw new ToonNotAuthenticatedException("Missing username and/or password(hash). Did you forgot to authenticate()?");
     }
 
-    private <T extends ToonResponse> T post(URI uri, Map<String, String> params, Class<T> classOfT) throws ToonUnauthorizedException {
+    private <T extends ToonResponse> T post(URI uri, Map<String, String> params, Class<T> classOfT) throws ToonUnauthorizedException, ToonException {
         UrlEncodedFormEntity formEntity = formEntityFromParameters(params);
 
         HttpPost method = new HttpPost(uri);
@@ -254,14 +255,14 @@ public class ToonClient {
         return executeForObject(method, classOfT);
     }
 
-    private <T extends ToonResponse> T get(URI uri, Map<String, String> queryParams, Class<T> classOfT) throws ToonUnauthorizedException {
+    private <T extends ToonResponse> T get(URI uri, Map<String, String> queryParams, Class<T> classOfT) throws ToonUnauthorizedException, ToonException {
         uri = appendParametersToURI(uri, queryParams);
 
         HttpGet method = new HttpGet(uri);
         return executeForObject(method, classOfT);
     }
 
-    private <T extends ToonResponse> T executeForObject(HttpRequestBase method, Class<T> classOfT) throws ToonUnauthorizedException {
+    private <T extends ToonResponse> T executeForObject(HttpRequestBase method, Class<T> classOfT) throws ToonUnauthorizedException, ToonException {
         try {
             applyRequestProxy(method);
 
@@ -278,19 +279,19 @@ public class ToonClient {
                     throw new ToonUnauthorizedException();
                 }
                 else{
-                    throw new IllegalStateException("Got a success acknowledgement while statusCode 500 was received");
+                    throw new ToonException("Got a success acknowledgement while statusCode 500 was received");
                 }
             }
             else{
-                throw new IllegalStateException("Unhandled statusCode " + response.getStatusLine().getStatusCode());
+                throw new ToonException("Unhandled statusCode " + response.getStatusLine().getStatusCode());
             }
 
         } catch (IOException e) {
-            throw new IllegalStateException("Error while performing request to " + method.getURI(), e);
+            throw new ToonException("Error while performing request to " + method.getURI(), e);
         }
     }
 
-    private <T> T tryExtractDefunctHtmlAsJson(Class<T> classOfT, HttpEntity entity) throws IOException {
+    private <T> T tryExtractDefunctHtmlAsJson(Class<T> classOfT, HttpEntity entity) throws IOException, ToonException {
         String responseString = EntityUtils.toString(entity, "UTF-8");
         String html = StringEscapeUtils.unescapeHtml(responseString);
         if (!isEmpty(html)){
@@ -302,7 +303,7 @@ public class ToonClient {
             }
         }
 
-        throw new IllegalStateException("Received error from server: " + responseString);
+        throw new ToonException("Failed to convert defunct html to json: " + responseString);
     }
 
     private void applyRequestProxy(HttpRequestBase method) {

@@ -2,6 +2,7 @@ import com.google.mockwebserver.MockResponse;
 import com.google.mockwebserver.MockWebServer;
 import com.sqcubes.toon.api.ToonClient;
 import com.sqcubes.toon.api.exception.ToonAuthenticationFailedException;
+import com.sqcubes.toon.api.exception.ToonException;
 import com.sqcubes.toon.api.exception.ToonLoginFailedException;
 import com.sqcubes.toon.api.exception.ToonNotAuthenticatedException;
 import org.apache.commons.io.IOUtils;
@@ -23,7 +24,7 @@ public class ToonClientTest {
     }
 
     @Test
-    public void testInvalidAuthentication() throws IOException, ToonAuthenticationFailedException {
+    public void testInvalidAuthentication() throws IOException, ToonException {
         MockWebServer server = createAndStartServer();
         try{
             ToonClient toon = new ToonClient(HttpClients.createDefault(),server.getUrl("/"));
@@ -67,7 +68,7 @@ public class ToonClientTest {
     }
 
     @Test
-    public void testSetTemperatureNoLogin() throws IOException, ToonLoginFailedException {
+    public void testSetTemperatureNoLogin() throws IOException, ToonException {
         MockWebServer server = createAndStartServer();
         try{
             ToonClient toon = new ToonClient(HttpClients.createDefault(), server.getUrl("/"));
@@ -81,7 +82,7 @@ public class ToonClientTest {
     }
 
     @Test
-    public void testSetTemperatureLogin() throws IOException, ToonAuthenticationFailedException, ToonLoginFailedException {
+    public void testSetTemperatureLogin() throws IOException, ToonException {
         MockWebServer server = createAndStartServer();
         try{
             ToonClient toon = new ToonClient(HttpClients.createDefault(), server.getUrl("/"));
@@ -115,7 +116,7 @@ public class ToonClientTest {
     }
 
     @Test
-    public void testReLoginRequired() throws IOException, ToonLoginFailedException, ToonAuthenticationFailedException {
+    public void testReLoginRequired() throws IOException, ToonException {
         MockWebServer server = createAndStartServer();
         try{
             ToonClient toon = new ToonClient(HttpClients.createDefault(), server.getUrl("/"));

@@ -1,7 +1,7 @@
 import com.sqcubes.toon.api.ToonClient;
+import com.sqcubes.toon.api.exception.ToonException;
 import com.sqcubes.toon.api.model.ToonSchemeState;
 import com.sqcubes.toon.api.persistence.ToonFilePersistenceHandler;
-import com.sqcubes.toon.api.exception.ToonLoginFailedException;
 import org.apache.http.impl.client.HttpClients;
 import org.junit.*;
 
@@ -30,13 +30,13 @@ public class ToonClientPrivateTest {
     }
 
     @Test
-    public void testLoginSetTemperature() throws ToonLoginFailedException {
+    public void testLoginSetTemperature() throws ToonException {
         boolean updated = toonClient.setTemperature(19.5f);
         assertTrue(updated);
     }
 
     @Test
-    public void testLoginSetScheme() throws ToonLoginFailedException {
+    public void testLoginSetScheme() throws ToonException {
         boolean updated = toonClient.setSchemeState(ToonSchemeState.AWAY);
         assertTrue(updated);
     }

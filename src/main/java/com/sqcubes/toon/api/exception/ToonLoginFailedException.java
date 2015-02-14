@@ -2,7 +2,7 @@ package com.sqcubes.toon.api.exception;
 
 import com.sqcubes.toon.api.model.ToonLoginResponse;
 
-public class ToonLoginFailedException extends Exception {
+public class ToonLoginFailedException extends ToonException {
     public ToonLoginFailedException(Throwable cause) {
         super(cause);
     }
