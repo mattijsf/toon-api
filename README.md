@@ -13,6 +13,24 @@ Implemented so far:
 * Set temperature: e.g: '19.5'
 * more to come
 
+
+The java API itself is based on [Apache HttpClient 4.3.x](http://hc.apache.org/httpcomponents-client-4.3.x/index.html):
+```java
+new ToonClient(HttpClients.createDefault());
+```
+
+Or, if you want to use [OkHttp](https://github.com/square/okhttp/tree/master/okhttp-apache)
+```java
+new ToonClient(new OkApacheClient());
+```
+
+On Android:
+```java
+new ToonClient(new DefaultHttpClient())
+```
+
+
+
 ## Usage
 
 ### ToonClient
